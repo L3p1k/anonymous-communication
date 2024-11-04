@@ -24,10 +24,15 @@ def start(message: types.Message):
 
 @bot.message_handler(commands=['help'])
 def start(message: types.Message):
-    bot.send_message(message.chat.id, 'Искать собеседника /find; остановть поиск или прекратить общение /stop')
+    bot.send_message(message.chat.id, 'Искать собеседника /find; остановть поиск или прекратить общение /stop; Посмотреть мемы /mem')
+    
+@bot.message_handler(commands=['mem'])
+def send_mem(message):
+    with open('images/mem1.jpg', 'rb') as f:
+        bot.send_photo(message.chat.id, f)
 
 @bot.message_handler(commands=['find'])
-def find(message: types.Message):
+def find(message: types.Message):      
     global freeid
 
     if message.chat.id not in users:
@@ -44,7 +49,7 @@ def find(message: types.Message):
             users[freeid] = message.chat.id
             users[message.chat.id] = freeid
             freeid = None
-
+            
         print(users, freeid) # Debug purpose, you can remove that line
     else:
         bot.send_message(message.chat.id, 'Заткнись!')
@@ -101,3 +106,5 @@ def chatting(message: types.Message):
         bot.send_message(message.chat.id, 'Никто тебя не слышит...')
 
 bot.infinity_polling(skip_pending=True)
+
+        
